@@ -1,13 +1,20 @@
 package storageAdapterFs
 
+import (
+	"path/filepath"
+)
+
 type handlesManager struct {
-	files map[string]struct {
+	config Config
+	files  map[string]struct {
 		handle fileHandle
 	}
 }
 
-func newHandlesManager() handlesManager {
-	return handlesManager{}
+func newHandlesManager(config Config) handlesManager {
+	return handlesManager{
+		config: config,
+	}
 }
 
 func (m handlesManager) Write(stream string, content string) {
@@ -25,5 +32,6 @@ func (m handlesManager) Write(stream string, content string) {
 }
 
 func (m handlesManager) CreateOutput(stream string) (fileHandle, error) {
-	return newFileHandle(stream)
+	path := filepath.Join(m.config.BasePath, stream+".log")
+	return newFileHandle(path)
 }
