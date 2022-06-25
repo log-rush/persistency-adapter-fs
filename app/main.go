@@ -5,7 +5,6 @@ import (
 	"time"
 
 	storageAdapterFs "github.com/log-rush/persistency-adapter-fs"
-	logRush "github.com/log-rush/server-devkit"
 )
 
 func main() {
@@ -19,13 +18,13 @@ func main() {
 		fmt.Println(err)
 	}
 	fmt.Println("writing")
-	a.HandleLog(logRush.Log{Message: "test", Stream: "a"})
+	a.AppendLogs("test", "a")
 	time.Sleep(time.Second * 10)
 	fmt.Println("writing")
-	a.HandleLog(logRush.Log{Message: "test", Stream: "a"})
+	a.AppendLogs("test", "a")
 	time.Sleep(time.Second * 2)
 	fmt.Println("writing")
-	a.HandleLog(logRush.Log{Message: "test", Stream: "a"})
+	a.AppendLogs("test", "a")
 	time.Sleep(time.Second * 3)
 	fmt.Println("should not be closed")
 	fmt.Println("shutdown")

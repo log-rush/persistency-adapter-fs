@@ -4,7 +4,6 @@ import (
 	"os"
 	"time"
 
-	logRush "github.com/log-rush/server-devkit"
 	"github.com/robfig/cron/v3"
 )
 
@@ -51,8 +50,8 @@ func NewFSStorageAdapter(config Config) (*Adapter, error) {
 	return &adapter, nil
 }
 
-func (a *Adapter) HandleLog(log logRush.Log) {
-	a.fileManager.Write(log.Stream, log.Message)
+func (a *Adapter) AppendLogs(key string, logs string) {
+	a.fileManager.Write(key, logs)
 }
 
 func (a *Adapter) Shutdown() {
