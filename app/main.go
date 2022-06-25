@@ -9,7 +9,15 @@ import (
 )
 
 func main() {
-	a, _ := storageAdapterFs.NewFSStorageAdapter(storageAdapterFs.Config{BasePath: "./abc/efg", OpenHandleTimeout: time.Second * 5})
+	a, err := storageAdapterFs.NewFSStorageAdapter(storageAdapterFs.Config{
+		BasePath:              "./abc/efg",
+		OpenHandleTimeout:     time.Second * 5,
+		ForceUpdateOnMidnight: true,
+		DateFormat:            "05--02_01_06",
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
 	fmt.Println("writing")
 	a.HandleLog(logRush.Log{Message: "test", Stream: "a"})
 	time.Sleep(time.Second * 10)

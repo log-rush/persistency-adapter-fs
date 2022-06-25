@@ -5,15 +5,20 @@ import (
 	"time"
 
 	logRush "github.com/log-rush/server-devkit"
+	"github.com/robfig/cron/v3"
 )
 
 type Adapter struct {
 	fileManager handlesManager
+	cronHandler *cron.Cron
 }
 
 type Config struct {
-	BasePath          string
-	OpenHandleTimeout time.Duration
+	BasePath              string
+	OpenHandleTimeout     time.Duration
+	ForceUpdateOnMidnight bool
+	DateFormat            string
+	Timezone              string
 }
 
 func NewFSStorageAdapter(config Config) (*Adapter, error) {
@@ -25,9 +30,25 @@ func NewFSStorageAdapter(config Config) (*Adapter, error) {
 		}
 	}
 
-	return &Adapter{
+	adapter := Adapter{
 		fileManager: newHandlesManager(config),
-	}, nil
+	}
+
+	if config.ForceUpdateOnMidnight {
+		customLocation, err := time.LoadLocation(config.Timezone)
+		if err != nil {
+			return &Adapter{}, err
+		}
+
+		cronHandler := cron.New(cron.WithLocation(customLocation))
+		cronHandler.AddFunc("0 0 * * * *", func() {
+			adapter.fileManager.CloseAll()
+		})
+		cronHandler.Start()
+		adapter.cronHandler = cronHandler
+	}
+
+	return &adapter, nil
 }
 
 func (a *Adapter) HandleLog(log logRush.Log) {
@@ -36,4 +57,5 @@ func (a *Adapter) HandleLog(log logRush.Log) {
 
 func (a *Adapter) Shutdown() {
 	a.fileManager.CloseAll()
+	a.cronHandler.Stop()
 }

@@ -1,2 +1,4 @@
 github.com/log-rush/server-devkit v1.0.0 h1:y5skWCvjCx8FuNKA4WYq1igoOr1Z4jvInfwygorGbXg=
 github.com/log-rush/server-devkit v1.0.0/go.mod h1:OPNkTLqUTl27Ux+7IlvRX7/HFC0BcK6hdgIhq+xAGG4=
+github.com/robfig/cron/v3 v3.0.1 h1:WdRxkvbJztn8LMz/QEvLN5sBU+xKpSqwwUO1Pjr4qDs=
+github.com/robfig/cron/v3 v3.0.1/go.mod h1:eQICP3HwyT7UooqI/z+Ov+PtYAWygg1TEWWzGIFLtro=
