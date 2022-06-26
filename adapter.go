@@ -13,11 +13,12 @@ type Adapter struct {
 }
 
 type Config struct {
-	BasePath              string
-	OpenHandleTimeout     time.Duration
-	ForceUpdateOnMidnight bool
-	DateFormat            string
-	Timezone              string
+	BasePath                string
+	OpenHandleTimeout       time.Duration
+	ForceUpdateOnMidnight   bool
+	DateFormat              string
+	Timezone                string
+	GroupStreamsIntoFolders bool
 }
 
 func NewFSStorageAdapter(config Config) (*Adapter, error) {

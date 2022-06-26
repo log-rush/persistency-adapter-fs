@@ -44,8 +44,7 @@ func (m *handlesManager) Write(stream string, content string) {
 }
 
 func (m *handlesManager) CreateOutput(stream string) (openFileHandle, error) {
-	now := time.Now().Format(m.config.DateFormat)
-	path := filepath.Join(m.config.BasePath, stream+"_"+now+".log")
+	path := constructLogFilePath(stream, m.config)
 	handle, err := newFileHandle(path)
 	if err != nil {
 		return openFileHandle{}, err
@@ -87,4 +86,13 @@ func (m *handlesManager) CloseAll() {
 	}
 	m.files = map[string]*openFileHandle{}
 	m.mutex.Unlock()
+}
+
+func constructLogFilePath(stream string, config Config) string {
+	now := time.Now().Format(config.DateFormat)
+	folder := config.BasePath
+	if config.GroupStreamsIntoFolders {
+		folder = filepath.Join(config.BasePath, stream)
+	}
+	return filepath.Join(folder, stream+"_"+now+".log")
 }
