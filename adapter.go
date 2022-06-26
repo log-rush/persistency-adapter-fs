@@ -19,13 +19,18 @@ type Config struct {
 	DateFormat              string
 	Timezone                string
 	GroupStreamsIntoFolders bool
+	FilePermissions         os.FileMode
 }
 
 func NewFSStorageAdapter(config Config) (*Adapter, error) {
 
+	if config.FilePermissions == 0 {
+		config.FilePermissions = 0744
+	}
+
 	// ensure logs directory
 	if _, err := os.Stat(config.BasePath); os.IsNotExist(err) {
-		if err := os.MkdirAll(config.BasePath, 0777); err != nil {
+		if err := os.MkdirAll(config.BasePath, config.FilePermissions); err != nil {
 			return &Adapter{}, err
 		}
 	}

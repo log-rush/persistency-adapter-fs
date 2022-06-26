@@ -45,7 +45,7 @@ func (m *handlesManager) Write(stream string, content string) {
 
 func (m *handlesManager) CreateOutput(stream string) (openFileHandle, error) {
 	path := constructLogFilePath(stream, m.config)
-	handle, err := newFileHandle(path)
+	handle, err := newFileHandle(path, m.config.FilePermissions)
 	if err != nil {
 		return openFileHandle{}, err
 	}
