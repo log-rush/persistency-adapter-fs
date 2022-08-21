@@ -60,6 +60,14 @@ func (a *Adapter) AppendLogs(key string, logs string) {
 	a.fileManager.Write(key, logs)
 }
 
+func (a *Adapter) ListLogFiles(key string) []string {
+	return a.fileManager.ListLogFiles(key)
+}
+
+func (a *Adapter) GetLogs(key string, logFile string) ([]byte, error) {
+	return []byte{}, nil
+}
+
 func (a *Adapter) Shutdown() {
 	a.fileManager.CloseAll()
 	a.cronHandler.Stop()

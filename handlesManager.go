@@ -1,7 +1,9 @@
 package storageAdapterFs
 
 import (
+	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 	"sync"
 	"time"
@@ -86,6 +88,26 @@ func (m *handlesManager) CloseAll() {
 	}
 	m.files = map[string]*openFileHandle{}
 	m.mutex.Unlock()
+}
+
+func (m *handlesManager) ListLogFiles(stream string) []string {
+	path := constructLogFilePath(stream, m.config)
+	dir := filepath.Dir(path)
+	// ensure stream directory
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		return []string{}
+	}
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return []string{}
+	}
+	fileNames := []string{}
+	for _, file := range files {
+		if !file.IsDir() {
+			fileNames = append(fileNames, file.Name())
+		}
+	}
+	return fileNames
 }
 
 func constructLogFilePath(stream string, config Config) string {
