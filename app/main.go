@@ -12,14 +12,16 @@ func main() {
 		BasePath:                "./_logs",
 		OpenHandleTimeout:       time.Second * 5,
 		ForceUpdateOnMidnight:   true,
-		DateFormat:              "_02_01_06",
+		DateFormat:              "02_01_06",
 		GroupStreamsIntoFolders: true,
 	})
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	a.AppendLogs("test", "")
+	a.AppendLogs("test", "ABC\n")
+	a.AppendLogs("test", "EFG\n")
+	a.AppendLogs("test", "HIJ\n")
 
-	fmt.Println(a.ListLogFiles("test"))
+	fmt.Println(a.GetLogs("test", "test_21_08_22.log"))
 }

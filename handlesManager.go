@@ -110,6 +110,15 @@ func (m *handlesManager) ListLogFiles(stream string) []string {
 	return fileNames
 }
 
+func (m *handlesManager) GetLogs(stream string, fileName string) ([]byte, error) {
+	folder := m.config.BasePath
+	if m.config.GroupStreamsIntoFolders {
+		folder = filepath.Join(m.config.BasePath, stream)
+	}
+	path := filepath.Join(folder, fileName)
+	return ioutil.ReadFile(path)
+}
+
 func constructLogFilePath(stream string, config Config) string {
 	now := time.Now().Format(config.DateFormat)
 	folder := config.BasePath

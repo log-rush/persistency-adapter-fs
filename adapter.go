@@ -65,7 +65,7 @@ func (a *Adapter) ListLogFiles(key string) []string {
 }
 
 func (a *Adapter) GetLogs(key string, logFile string) ([]byte, error) {
-	return []byte{}, nil
+	return a.fileManager.GetLogs(key, logFile)
 }
 
 func (a *Adapter) Shutdown() {
